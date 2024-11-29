@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 
 import localFont from 'next/font/local';
+
+import { Sidebar } from '@/components/common/Sidebar';
 import QueryProvider from '@/provider/QueryProvider';
 import '@/styles/globals.css';
 
@@ -24,7 +26,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${pretendard.variable} font-pretendard`}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <Sidebar />
+          {children}
+        </QueryProvider>
       </body>
     </html>
   );
