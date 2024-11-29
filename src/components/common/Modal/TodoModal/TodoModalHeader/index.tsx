@@ -2,12 +2,20 @@ import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { FaCheck } from 'react-icons/fa6';
 import { TodoModalProps } from '@/types/TodoType';
+import { useTodoModalStore } from '@/store/useTodoModalStore';
+import { cn } from '@/utils/className';
 
-export const TodoModalHeader = ({ onClose, todoType }: TodoModalProps) => {
+export const TodoModalHeader = ({ todoType }: TodoModalProps) => {
+  const { close } = useTodoModalStore();
   const [isChkClick, setIstChkClick] = useState(false);
 
+  const iconContainerClass = cn(
+    'flex size-18 items-start justify-center rounded-6 border border-slate-200',
+    isChkClick ? 'bg-blue-600' : 'bg-white',
+  );
+
   const handleClose = () => {
-    onClose();
+    close();
   };
 
   const handleClick = () => {
@@ -26,10 +34,7 @@ export const TodoModalHeader = ({ onClose, todoType }: TodoModalProps) => {
         <></>
       ) : (
         <div className="flex items-center gap-6">
-          <button
-            className={`flex size-18 items-start justify-center rounded-6 border border-slate-200 ${isChkClick ? 'bg-blue-600' : 'bg-white'} `}
-            onClick={handleClick}
-          >
+          <button className={iconContainerClass} onClick={handleClick}>
             {isChkClick ? <FaCheck className="size-16 text-white" /> : <></>}
           </button>
 
