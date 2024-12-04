@@ -1,7 +1,0 @@
-node_modules
-build
-dist
-.next
-public
-*.config.js
-*.config.ts
