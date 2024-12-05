@@ -1,53 +1,111 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-
+import { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta = {
-  title: 'Example/Button',
+const meta: Meta<typeof Button> = {
+  title: 'Components/Button',
   component: Button,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
+    docs: {
+      description: {
+        component: `
+        Button 컴포넌트는 onClick 이벤트를 처리할 수 있는 컴포넌트입니다.
+        
+    프로젝트의 디자인 시스템에 맞춰 
+    size, primary, radius, disabled, pending, onClick, children의 Props를 가지고 있습니다.
+    children을 제외한 Props는 기본 설정값이 존재하기에, 작성하지 않아도 Button 컴포넌트를 사용할 수 있습니다.
+
+    className을 추가하여 css를 커스텀할 수 있습니다. 대표적으로 width 값을 지정할 수 있습니다.`,
+      },
+    },
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
-    backgroundColor: { control: 'color' },
+    size: {
+      control: { type: 'radio' },
+      options: ['small', 'medium', 'large'],
+    },
+    primary: {
+      control: { type: 'boolean' },
+    },
+    radius: {
+      control: { type: 'boolean' },
+    },
+    disabled: {
+      control: { type: 'boolean' },
+    },
+    pending: {
+      control: { type: 'boolean' },
+    },
+    onClick: { action: 'clicked' },
+    className: {
+      control: `text`,
+    },
+    children: {
+      control: 'text',
+    },
   },
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
-  args: { onClick: fn() },
-} satisfies Meta<typeof Button>;
+
+  tags: ['autodocs'],
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary: Story = {
+export const Default: StoryObj<typeof Button> = {
   args: {
     primary: true,
-    label: 'Button',
+    children: '기본 스타일 버튼',
   },
 };
 
-export const Secondary: Story = {
+export const Radius: StoryObj<typeof Button> = {
   args: {
-    label: 'Button',
+    radius: false,
+    children: '둥근 버튼',
   },
 };
 
-export const Large: Story = {
+export const Disabled: StoryObj<typeof Button> = {
   args: {
-    size: 'large',
-    label: 'Button',
+    disabled: true,
+    children: '비활성화된 버튼',
   },
 };
 
-export const Small: Story = {
+export const Pending: StoryObj<typeof Button> = {
+  args: {
+    pending: true,
+    children: '로딩 중',
+  },
+};
+
+export const Small: StoryObj<typeof Button> = {
   args: {
     size: 'small',
-    label: 'Button',
+    children: '작은 버튼',
+  },
+};
+
+export const Medium: StoryObj<typeof Button> = {
+  args: {
+    size: 'medium',
+    children: '중간 버튼',
+  },
+};
+
+export const Large: StoryObj<typeof Button> = {
+  args: {
+    size: 'large',
+    children: '큰 버튼',
+  },
+};
+
+export const AllOptions: StoryObj<typeof Button> = {
+  args: {
+    size: 'large',
+    primary: true,
+    radius: true,
+    disabled: false,
+    pending: false,
+    children: '전체 옵션 버튼',
   },
 };
