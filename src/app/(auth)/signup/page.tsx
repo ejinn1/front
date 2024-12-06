@@ -32,7 +32,7 @@ export default function Signup() {
       >
         <Logo />
         <div className="flex w-full flex-col items-start gap-48">
-          <div className="flex w-full flex-col items-start gap-24">
+          <div className="flex w-full flex-col items-start gap-16">
             <NameInput register={register} error={errors.name} />
             <EmailInput register={register} error={errors.email} />
             <PasswordInput register={register} error={errors.password} />
@@ -50,7 +50,7 @@ export default function Signup() {
               <span className="text-base-semibold text-white">확인</span>
             </button>
             <AuthFooter
-              description={AUTH_FOOTER_MESSAGES.SIGNIN}
+              description={AUTH_FOOTER_MESSAGES.SIGNUP}
               linkTo="/signin"
               linkToDescription="로그인"
             />
