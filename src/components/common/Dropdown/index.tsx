@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { dropdownVariants } from '@/utils/motionVariants';
+import { dropdownVariants } from '@/constants/motionVariants';
 
 interface DropdownProps {
   dropdownData: string[];
@@ -45,12 +45,12 @@ export const Dropdown = ({
       initial="closed"
       animate={isOpenDropdown ? 'open' : 'closed'}
       variants={dropdownVariants}
-      className="absolute top-full inline-flex max-h-150 w-full origin-top flex-col items-start overflow-y-auto rounded-b-12 bg-white shadow-lg scrollbar-hide"
+      className="absolute top-full z-20 inline-flex max-h-150 w-full origin-top flex-col items-start overflow-y-auto rounded-b-12 bg-white shadow-lg scrollbar-hide"
     >
       {dropdownData.map((item) => {
         return (
           <li
-            className="flex-center mt-2 w-full cursor-pointer border-b-2 border-gray-100 p-10 text-sm-normal hover:bg-slate-200 sm:text-lg-normal"
+            className="flex-center mt-2 w-full cursor-pointer border-b-2 border-gray-100 p-10 text-sm-normal hover:bg-slate-200 sm:text-base-normal"
             key={item}
             onClick={() => handleClickItem(item)}
           >
