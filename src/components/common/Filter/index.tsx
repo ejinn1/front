@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 
 interface FilterProps {
   filters: string[];
+  className?: string;
   onFilterChange: (filter: string) => void;
 }
 
@@ -26,7 +27,7 @@ interface FilterProps {
  */
 
 export const Filter = (props: FilterProps) => {
-  const { filters, onFilterChange } = props;
+  const { filters, className = '', onFilterChange } = props;
   const [selectedFilter, setSelectedFilter] = useState<string>(filters[0]);
 
   const handleFilterClick = (filter: string) => {
@@ -35,16 +36,16 @@ export const Filter = (props: FilterProps) => {
   };
 
   return (
-    <div className="flex space-x-2">
+    <div className={`flex ${className}`}>
       {filters.map((filter) => (
         <motion.button
           key={filter}
           onClick={() => handleFilterClick(filter)}
           whileTap={{ scale: 0.9 }}
           animate={{
-            backgroundColor: selectedFilter === filter ? '#3B82F6' : '#FFFFFF',
+            backgroundColor: selectedFilter === filter ? '#536894' : '#FFFFFF',
             color: selectedFilter === filter ? '#ffffff' : '#1E293B',
-            borderColor: selectedFilter === filter ? '#3B82F6' : '#e2e8f0',
+            borderColor: selectedFilter === filter ? '#536894' : '#e2e8f0',
           }}
           transition={{ duration: 0.3 }}
           className="flex h-28 items-center gap-10 rounded-full border border-solid px-12 py-4 text-sm-medium"
