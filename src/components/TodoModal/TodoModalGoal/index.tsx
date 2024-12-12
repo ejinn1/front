@@ -1,22 +1,29 @@
 import { useState } from 'react';
 import { PLACEHOLDERS } from '@/constants/Placeholders';
-import { TODO_MOCK_DATA } from '@/constants/TodoMockData';
+import { TODO_MOCK_DATA } from '@/mocks/TodoMockData';
 import { Dropdown } from '@/components/common/Dropdown';
 import { Input } from '@/components/common/Input';
 import { useTodoDataStore } from '@/store/useTodoDataStore';
+import { Goal } from '@/types/Goals';
 import { DropdownIcon } from './DropdownIcon';
 
-export const TodoModalTarget = () => {
-  const { target, setTarget } = useTodoDataStore();
+export const TodoModalGoal = () => {
+  const { setTodoData } = useTodoDataStore();
+  const [goalTitle, setGoalTitle] = useState<string>('');
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
   const handleDropdown = () => {
     setIsOpenDropdown(!isOpenDropdown);
   };
 
-  const handleSelectItem = (item: string) => {
-    setTarget(item);
+  const handleSelectItem = (item: Goal) => {
+    setTodoData({ goalId: item.goalId });
+    setGoalTitle(item.goalTitle);
     setIsOpenDropdown(false);
+  };
+
+  const renderDropdownItem = (item: Goal) => {
+    return <span>{item.goalTitle}</span>;
   };
 
   return (
@@ -28,7 +35,7 @@ export const TodoModalTarget = () => {
         <Input
           className="cursor-pointer"
           placeholder={PLACEHOLDERS.TARGET}
-          value={target}
+          value={goalTitle}
           readOnly
           onClick={handleDropdown}
         />
@@ -42,6 +49,7 @@ export const TodoModalTarget = () => {
         dropdownData={TODO_MOCK_DATA}
         onSelectItem={handleSelectItem}
         isOpenDropdown={isOpenDropdown}
+        renderItem={renderDropdownItem}
       />
     </div>
   );

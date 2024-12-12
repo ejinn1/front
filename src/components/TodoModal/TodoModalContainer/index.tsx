@@ -3,7 +3,7 @@ import {
   TodoModalDocs,
   TodoModalHeader,
   TodoModalRepeat,
-  TodoModalTarget,
+  TodoModalGoal,
   TodoModalTitle,
 } from '@/components/TodoModal';
 import { ModalContainer } from '@/components/common/ModalContainer';
@@ -13,13 +13,15 @@ import { useTodoModalStore } from '@/store/useTodoModalStore';
 import { useTodoDataStore } from '@/store/useTodoDataStore';
 import { todoModalVariants } from '@/constants/motionVariants';
 import { todoDataValidation } from '@/utils/todoDataValidation';
+import { useCreateTodo } from '@/hooks/useCreateTodo';
 
 const TodoModal = ({ todoType }: TodoModalProps) => {
   const { close } = useTodoModalStore();
-  const { resetAll, title, target, date, fileName, link } = useTodoDataStore();
+  const { resetAll, todoData } = useTodoDataStore();
+  const { mutate } = useCreateTodo();
 
-  const viewData = () => {
-    console.log(title, target, date, fileName, link);
+  const handleClick = () => {
+    mutate(todoData);
   };
 
   const handleClose = () => {
@@ -39,7 +41,7 @@ const TodoModal = ({ todoType }: TodoModalProps) => {
           <div className="flex flex-col gap-24 self-stretch">
             <TodoModalHeader todoType={todoType} onClose={handleClose} />
             <TodoModalTitle />
-            <TodoModalTarget />
+            <TodoModalGoal />
             <TodoModalRepeat />
             <TodoModalDocs />
           </div>
@@ -47,8 +49,13 @@ const TodoModal = ({ todoType }: TodoModalProps) => {
             size="large"
             primary={true}
             className="mt-auto"
-            onClick={viewData}
-            disabled={todoDataValidation(title, target, date)}
+            onClick={handleClick}
+            disabled={todoDataValidation(
+              todoData.title,
+              todoData.goalId,
+              todoData.startDate,
+              todoData.endDate,
+            )}
           >
             확인
           </Button>

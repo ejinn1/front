@@ -5,14 +5,25 @@ import { useTodoDataStore } from '@/store/useTodoDataStore';
 import { FileUploadBtn } from './FileUploadBtn';
 
 export const FileUpload = () => {
-  const { fileName, setFileName } = useTodoDataStore();
+  const { todoData, setTodoData } = useTodoDataStore();
   const fileUploadRef = useRef<HTMLInputElement>(null);
 
   const handleFileName = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      setFileName(selectedFile.name);
+      setTodoData({ imageName: selectedFile.name });
+      encodeFileToBase64(selectedFile);
     }
+  };
+
+  const encodeFileToBase64 = (file: File) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (reader.result) {
+        setTodoData({ imageEncodedBase64: reader.result as string });
+      }
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -23,7 +34,7 @@ export const FileUpload = () => {
       animate="visible"
     >
       <FileUploadBtn
-        fileName={fileName}
+        fileName={todoData.imageName}
         onClick={() => fileUploadRef.current?.click()}
       />
       <input

@@ -1,41 +1,51 @@
 import { create } from 'zustand';
+import { CreateTodosRequest } from '@/types/CreateTodos/CreateTodosRequest';
 
-interface TodoDataType {
-  title: string;
-  target: string;
-  date: { startDate: Date | undefined; endDate: Date | undefined };
-  fileName?: string;
-  link?: string;
-  setTitle: (title: string) => void;
-  setTarget: (target: string) => void;
-  setDate: (startDate: Date | undefined, endDate: Date | undefined) => void;
-  setFileName: (fileName: string) => void;
-  setLink: (link: string) => void;
+interface TodoDataStore {
+  todoData: CreateTodosRequest;
+  setTodoData: (newData: Partial<CreateTodosRequest>) => void;
   resetAll: () => void;
-  resetFileName: () => void;
+  resetFile: () => void;
   resetLink: () => void;
 }
 
-export const useTodoDataStore = create<TodoDataType>((set) => ({
-  title: '',
-  target: '',
-  date: { startDate: undefined, endDate: undefined },
-  fileName: '',
-  link: '',
-  setTitle: (title: string) => set({ title: title }),
-  setTarget: (target: string) => set({ target: target }),
-  setDate: (startDate: Date | undefined, endDate: Date | undefined) =>
-    set({ date: { startDate: startDate, endDate: endDate } }),
-  setFileName: (fileName: string) => set({ fileName: fileName }),
-  setLink: (link: string) => set({ link: link }),
-  resetFileName: () => set({ fileName: '' }),
-  resetLink: () => set({ link: '' }),
+export const useTodoDataStore = create<TodoDataStore>((set) => ({
+  todoData: {
+    title: '',
+    startDate: '',
+    endDate: '',
+    todoLink: '',
+    imageName: '',
+    imageEncodedBase64: '',
+    goalId: 0,
+    goalTitle: '',
+  },
+
+  setTodoData: (newData: Partial<TodoDataStore>) =>
+    set((state) => ({
+      todoData: {
+        ...state.todoData,
+        ...newData,
+      },
+    })),
+  resetFile: () =>
+    set((state) => ({
+      todoData: { ...state.todoData, imageEncodedBase64: '', imageName: '' },
+    })),
+  resetLink: () =>
+    set((state) => ({
+      todoData: { ...state.todoData, todoLink: '' },
+    })),
   resetAll: () =>
     set({
-      title: '',
-      target: '',
-      date: { startDate: undefined, endDate: undefined },
-      fileName: '',
-      link: '',
+      todoData: {
+        title: '',
+        goalId: 0,
+        startDate: '',
+        endDate: '',
+        imageEncodedBase64: '',
+        imageName: '',
+        todoLink: '',
+      },
     }),
 }));
