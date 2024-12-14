@@ -1,22 +1,38 @@
 'use client';
 
-import { ChangeEvent, useEffect, useRef } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
-import { useGoalsStore } from '@/store/useGoalStore';
+import { useNewGoalsStore } from '@/store/useNewGoalStore';
+import { useSidebarGoalsMutation } from './apis/Sidebar/useSidebarGoalsMutation';
 
 export const useGoalInput = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { setNewGoal, isNew, toggleIsNew, addGoal, newGoal } = useGoalsStore();
+  const { isNew, toggleIsNew } = useNewGoalsStore();
+
+  const { mutate: postNewGoalMutation } = useSidebarGoalsMutation();
+
+  const [newGoal, setNewGoal] = useState('');
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewGoal(e.target.value);
   };
 
   const handlePostNewGoal = () => {
-    addGoal();
+    const postData = {
+      title: newGoal,
+      userId: 0,
+    };
+    postNewGoalMutation(postData, {
+      onSuccess: () => {
+        console.log('보내기 성공!');
+      },
+      onError: (error) => {
+        console.log('에러남', error);
+      },
+    });
     setNewGoal('');
-    toggleIsNew(false);
+    toggleIsNew();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -29,7 +45,7 @@ export const useGoalInput = () => {
     if (newGoal.trim()) {
       handlePostNewGoal();
     } else {
-      toggleIsNew(false);
+      toggleIsNew();
     }
   };
 
@@ -41,6 +57,7 @@ export const useGoalInput = () => {
 
   return {
     inputRef,
+    newGoal,
     handleInputChange,
     handleKeyDown,
     handleBlur,
