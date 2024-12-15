@@ -7,11 +7,15 @@ import { Header } from '@/components/common/Header';
 import TodoModal from '@/components/TodoModal/TodoModalContainer';
 import { notify } from '@/store/useToastStore';
 import { useTodoModalStore } from '@/store/useTodoModalStore';
+import { SelectionModal } from '@/components/SelectionModal';
 
 export default function Home() {
   const { isOpen } = useTodoModalStore();
 
   const [currentFilter, setCurrentFilter] = useState<string>('All');
+  const [isSelectionModalOpen, setIsSelectionModalOpen] =
+    useState<boolean>(false);
+  const [selectedValue, setSelectedValue] = useState<string>('');
 
   const handleFilterChange = (filter: string) => {
     setCurrentFilter(filter);
@@ -30,31 +34,25 @@ export default function Home() {
     notify('info', '정보 메시지입니다!', 3000);
   };
 
+  const handleOpenSelectionModal = () => {
+    setIsSelectionModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsSelectionModalOpen(false);
+    setSelectedValue('취소버튼클릭');
+  };
+
+  const handleConfirmModal = () => {
+    setIsSelectionModalOpen(false);
+    setSelectedValue('확인버튼클릭');
+  };
+
   return (
     <div className="pt-48 sm:px-60 sm:pt-0">
       <Header />
       <button className="size-100">안녕asdfasfd</button>
       <HeartIcon width="32" height="32" fill="#FF0000" />
-
-      <div className="text-3xl-bold">3xl bold</div>
-      <div className="text-3xl-semibold">3xl semibold</div>
-      <div className="text-3xl-medium">3xl medium</div>
-      <div className="text-3xl-normal">3xl normal</div>
-      <div className="text-3xl-light">3xl light</div>
-
-      <div className="text-3xl-bold text-blue-50">3xl bold</div>
-      <div className="text-3xl-semibold text-blue-100">3xl semibold</div>
-      <div className="text-3xl-medium text-blue-200">3xl medium</div>
-      <div className="text-3xl-normal text-blue-300">3xl normal</div>
-      <div className="text-3xl-light text-blue-400">3xl light</div>
-
-      <div className="text-3xl-bold text-blue-500">3xl bold</div>
-      <div className="text-3xl-semibold text-blue-600">3xl semibold</div>
-      <div className="text-3xl-medium text-blue-700">3xl medium</div>
-      <div className="text-3xl-normal text-blue-800">3xl normal</div>
-      <div className="text-3xl-light text-blue-900">3xl light</div>
-
-      <div className="text-3xl-bold text-blue-950">3xl bold</div>
 
       <button
         type="button"
@@ -89,6 +87,28 @@ export default function Home() {
         </div>
       </div>
       {isOpen && <TodoModal todoType="생성" />}
+
+      <div className="mt-8 rounded border p-4">
+        <h2 className="mb-4 text-lg font-semibold">SelectionModal 사용 예시</h2>
+        <p>선택된 값: {selectedValue}</p>
+        <button
+          className="mt-4 rounded bg-green-500 px-4 py-2 text-white"
+          onClick={handleOpenSelectionModal}
+        >
+          SelectionModal 열기
+        </button>
+      </div>
+
+      {isSelectionModalOpen && (
+        <SelectionModal
+          isOpen={isSelectionModalOpen}
+          onClose={handleCloseModal}
+          onConfirm={handleConfirmModal}
+          message="할 일 제목이에요~"
+          cancelButtonMessage="취소"
+          confirmButtonMessage="확인"
+        />
+      )}
     </div>
   );
 }
