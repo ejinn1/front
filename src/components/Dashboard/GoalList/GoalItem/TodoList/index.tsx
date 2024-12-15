@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+
 import { AnimatePresence, motion } from 'motion/react';
+
 import { TodoHeader } from '@/components/Dashboard/GoalList/GoalItem/TodoList/TodoHeader';
 import { TodoPic } from '@/components/Dashboard/GoalList/GoalItem/TodoList/TodoPic';
-import { TodoTypes } from '@/constants/DashboardMockData';
+import { TodosResponse } from '@/hooks/apis/Dashboard/useTodosOfGoalsQuery';
 
 interface TodoListProps {
-  todo: TodoTypes;
+  todo: TodosResponse;
 }
 
 export const TodoList = ({ todo }: TodoListProps) => {
@@ -25,10 +27,10 @@ export const TodoList = ({ todo }: TodoListProps) => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="grid origin-top grid-cols-4 gap-x-4 gap-y-8"
-            initial={{ scaleY: 0, height: 0, opacity: 0 }}
-            animate={{ scaleY: 1, height: 'auto', opacity: 1 }}
-            exit={{ scaleY: 0, height: 0, opacity: 0 }}
+            className="grid origin-top grid-cols-4 gap-x-4 gap-y-8 overflow-hidden"
+            initial={{ height: 0 }}
+            animate={{ height: 'auto' }}
+            exit={{ height: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
           >
             {todo.completes.map((complete, index) => (
