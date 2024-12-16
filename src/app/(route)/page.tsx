@@ -1,21 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+
 import HeartIcon from '@/assets/icon-heart.svg';
 import { Filter } from '@/components/common/Filter';
 import { Header } from '@/components/common/Header';
+import { InputModalContent } from '@/components/ImageInput/InputModalContent';
 import TodoModal from '@/components/TodoModal/TodoModalContainer';
 import { notify } from '@/store/useToastStore';
 import { useTodoModalStore } from '@/store/useTodoModalStore';
-import { SelectionModal } from '@/components/SelectionModal';
 
 export default function Home() {
   const { isOpen } = useTodoModalStore();
-
   const [currentFilter, setCurrentFilter] = useState<string>('All');
-  const [isSelectionModalOpen, setIsSelectionModalOpen] =
-    useState<boolean>(false);
-  const [selectedValue, setSelectedValue] = useState<string>('');
 
   const handleFilterChange = (filter: string) => {
     setCurrentFilter(filter);
@@ -34,18 +31,14 @@ export default function Home() {
     notify('info', '정보 메시지입니다!', 3000);
   };
 
-  const handleOpenSelectionModal = () => {
-    setIsSelectionModalOpen(true);
+  const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false);
+
+  const handleOpenGalleryModal = () => {
+    setIsGalleryModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsSelectionModalOpen(false);
-    setSelectedValue('취소버튼클릭');
-  };
-
-  const handleConfirmModal = () => {
-    setIsSelectionModalOpen(false);
-    setSelectedValue('확인버튼클릭');
+  const handleCloseGalleryModal = () => {
+    setIsGalleryModalOpen(false);
   };
 
   return (
@@ -86,29 +79,21 @@ export default function Home() {
           <p>Currently selected filter: {currentFilter}</p>
         </div>
       </div>
+
       {isOpen && <TodoModal todoType="생성" />}
 
-      <div className="mt-8 rounded border p-4">
-        <h2 className="mb-4 text-lg font-semibold">SelectionModal 사용 예시</h2>
-        <p>선택된 값: {selectedValue}</p>
-        <button
-          className="mt-4 rounded bg-green-500 px-4 py-2 text-white"
-          onClick={handleOpenSelectionModal}
-        >
-          SelectionModal 열기
-        </button>
-      </div>
+      <button
+        type="button"
+        className="mt-4 bg-green-500 px-4 py-2 text-white"
+        onClick={handleOpenGalleryModal}
+      >
+        갤러리/카메라 모달 열기
+      </button>
 
-      {isSelectionModalOpen && (
-        <SelectionModal
-          isOpen={isSelectionModalOpen}
-          onClose={handleCloseModal}
-          onConfirm={handleConfirmModal}
-          message="할 일 제목이에요~"
-          cancelButtonMessage="취소"
-          confirmButtonMessage="확인"
-        />
-      )}
+      <InputModalContent
+        isOpen={isGalleryModalOpen}
+        onClose={handleCloseGalleryModal}
+      />
     </div>
   );
 }
