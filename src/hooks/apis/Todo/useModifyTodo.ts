@@ -4,36 +4,36 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
-import { createTodo } from '@/apis/Todo/createTodo';
 import { notify } from '@/store/useToastStore';
 import { QUERY_KEYS } from '@/constants/QueryKeys';
-import { useSidebarStore } from '@/store/useSidebarStore';
 import { useTodoModalStore } from '@/store/useTodoModalStore';
-import { useTodoDataStore } from '@/store/useTodoDataStore';
-import { CreateTodosRequest } from '@/types/Todos/CreateTodos/CreateTodosRequest';
+import { modifyTodo } from '@/apis/Todo/modifyTodo';
+import { ModifyTodosRequest } from '@/types/Todos/ModifyTodos/ModifyTodosRequest';
 
-export const useCreateTodo = (): UseMutationResult<
+interface ModifyMutationProps {
+  todoId: string | number;
+  data: ModifyTodosRequest;
+}
+
+export const useModifyTodo = (): UseMutationResult<
   AxiosResponse,
   AxiosError,
-  CreateTodosRequest
+  ModifyMutationProps
 > => {
   const queryClient = useQueryClient();
   const { close } = useTodoModalStore();
-  const { resetAll } = useTodoDataStore();
-  const { close: closeSidebar } = useSidebarStore();
 
-  return useMutation<AxiosResponse, AxiosError, CreateTodosRequest>({
-    mutationFn: (data) => createTodo(data),
+  return useMutation<AxiosResponse, AxiosError, ModifyMutationProps>({
+    mutationFn: ({ todoId, data }: ModifyMutationProps) =>
+      modifyTodo(todoId, data),
     onSuccess: () => {
-      notify('success', '등록에 성공하였습니다', 3000);
+      notify('success', '수정에 성공하였습니다', 3000);
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.TODOS_OF_GOALS] });
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.RECENT_TODOS] });
-      resetAll();
       close();
-      closeSidebar();
     },
     onError: (error: AxiosError) => {
-      notify('error', '등록에 실패하였습니다', 3000);
+      notify('error', '수정에 실패하였습니다', 3000);
       console.error('Error creating todo:', error.message);
     },
   });

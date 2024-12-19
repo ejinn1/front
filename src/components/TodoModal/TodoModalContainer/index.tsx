@@ -8,7 +8,6 @@ import {
 } from '@/components/TodoModal';
 
 import { Button } from '@/components/common/Button/Button';
-import { TodoModalProps } from '@/types/TodoType';
 import { useTodoModalStore } from '@/store/useTodoModalStore';
 import { useTodoDataStore } from '@/store/useTodoDataStore';
 import { todoModalVariants } from '@/constants/motionVariants';
@@ -16,19 +15,23 @@ import { todoDataValidation } from '@/utils/todoDataValidation';
 import { useCreateTodo } from '@/hooks/apis/Todo/useCreateTodo';
 import { ModalContainer } from '@/components/common/Modal';
 
-const TodoModal = ({ todoType }: TodoModalProps) => {
-  const { close } = useTodoModalStore();
-  const { resetAll, todoData } = useTodoDataStore();
+const TodoModal = () => {
+  const { isOpen, close, todoType } = useTodoModalStore();
+  const { resetAll, getCreateTodoData } = useTodoDataStore();
   const { mutate } = useCreateTodo();
 
   const handleClick = () => {
-    mutate(todoData);
+    mutate(getCreateTodoData());
   };
 
   const handleClose = () => {
     close();
     resetAll();
   };
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <ModalContainer onClose={handleClose}>
@@ -52,10 +55,10 @@ const TodoModal = ({ todoType }: TodoModalProps) => {
             className="mt-auto"
             onClick={handleClick}
             disabled={todoDataValidation(
-              todoData.title,
-              todoData.goalId,
-              todoData.startDate,
-              todoData.endDate,
+              getCreateTodoData().title,
+              getCreateTodoData().goalId,
+              getCreateTodoData().startDate,
+              getCreateTodoData().endDate,
             )}
           >
             확인

@@ -1,7 +1,7 @@
 import { FaFlag, FaPlus } from 'react-icons/fa6';
 
-import { useTodoDataStore } from '@/store/useTodoDataStore';
 import { useTodoModalStore } from '@/store/useTodoModalStore';
+import { useTodoDataStore } from '@/store/useTodoDataStore';
 
 interface GoalHeaderProps {
   id: number;
@@ -11,12 +11,11 @@ interface GoalHeaderProps {
 
 export const GoalHeader = ({ id, title, color }: GoalHeaderProps) => {
   const { open } = useTodoModalStore();
-  const { setTodoData, setGoalTitle } = useTodoDataStore();
+  const { setTodoData } = useTodoDataStore();
 
   const handleClick = () => {
-    open();
-    setTodoData({ goalId: id });
-    setGoalTitle(title);
+    open('생성');
+    setTodoData({ goalId: id, goalTitle: title });
   };
 
   return (
