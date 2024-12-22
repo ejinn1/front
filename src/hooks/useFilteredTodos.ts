@@ -1,28 +1,28 @@
 import { useMemo } from 'react';
-import { Todo } from '@/types/Todos';
+import { TodayTodoItem } from '@/hooks/apis/Todo/useTodayTodo';
 
 export function useFilteredTodos(
-  todos: Todo[],
-  currentGoalFilter: string,
+  todos: TodayTodoItem[],
   currentSortFilter: string,
 ) {
   const { inProgressTodos, completedTodos } = useMemo(() => {
-    const filtered = todos.filter((todo) => {
-      if (currentGoalFilter === '전체') return true;
-      return todo.goal === currentGoalFilter;
-    });
+    let inProgress: TodayTodoItem[] = [];
+    let completed: TodayTodoItem[] = [];
 
-    if (currentSortFilter === '최신순') {
-      filtered.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-    } else if (currentSortFilter === '오래된 순') {
-      filtered.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    if (currentSortFilter === '진행' || currentSortFilter === '전체') {
+      inProgress = todos.filter(
+        (todo) => todo.complete.completeStatus === '진행',
+      );
     }
 
-    const inProgress = filtered.filter((todo) => todo.status === 'In Progress');
-    const completed = filtered.filter((todo) => todo.status === 'Completed');
+    if (currentSortFilter === '완료' || currentSortFilter === '전체') {
+      completed = todos.filter(
+        (todo) => todo.complete.completeStatus === '완료',
+      );
+    }
 
     return { inProgressTodos: inProgress, completedTodos: completed };
-  }, [todos, currentGoalFilter, currentSortFilter]);
+  }, [todos, currentSortFilter]);
 
   return { inProgressTodos, completedTodos };
 }
