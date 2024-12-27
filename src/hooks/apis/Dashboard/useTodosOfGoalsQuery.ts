@@ -1,10 +1,24 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  UseInfiniteQueryOptions,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 import { GET } from '@/apis/services/httpMethod';
 import { API_ENDPOINTS } from '@/constants/ApiEndpoints';
 import { QUERY_KEYS } from '@/constants/QueryKeys';
-import { TodoCompletesResponse } from '../Todo/useTodayTodo';
+import { BasePageableTypes } from '@/types/pageable';
+import { BaseResponse } from '@/types/response';
+
+export interface CompletesResponse {
+  completeId: number;
+  completePic: string;
+  note: string;
+  completeLink: string;
+  completeStatus: string;
+  createdAt: string;
+  startDate: string;
+}
 
 export interface TodosResponse {
   todoId: number;
@@ -15,7 +29,7 @@ export interface TodosResponse {
   todoLink: string;
   todoPic: string;
   createdAt: string;
-  completes: TodoCompletesResponse[];
+  completes: CompletesResponse[];
 }
 
 export interface GoalsResponse {
@@ -26,26 +40,35 @@ export interface GoalsResponse {
   todos: TodosResponse[];
 }
 
-export interface TodosOfGoalsResponse {
-  data: GoalsResponse[];
-  statusCode: number;
-  timestamp: string;
+export interface TodosOfGoalsResponse extends BaseResponse {
+  data: BasePageableTypes<GoalsResponse[]>;
 }
 
-export const todosOfGoalsOptions = (): UseQueryOptions<
+interface InfiniteQueryResponse {
+  pageParams: number[];
+  pages: TodosOfGoalsResponse[];
+}
+
+export const todosOfGoalsOptions = (): UseInfiniteQueryOptions<
   TodosOfGoalsResponse,
-  AxiosError
+  AxiosError,
+  InfiniteQueryResponse
 > => ({
   queryKey: [QUERY_KEYS.TODOS_OF_GOALS],
-  queryFn: () =>
+  queryFn: ({ pageParam = 0 }) =>
     GET<TodosOfGoalsResponse>(
-      `${API_ENDPOINTS.TODOS.GET_GOALS}?lastTodoId=0&size=3`,
+      `${API_ENDPOINTS.TODOS.GET_GOALS}?lastGoalId=${pageParam}&size=3`,
     ),
+  getNextPageParam: (lastPage) => {
+    const nextCursor = lastPage.data.nextCursor;
+    return nextCursor !== 0 ? nextCursor : undefined;
+  },
+  initialPageParam: 0,
 });
 
 export const useTodosOfGoalsQuery = () => {
-  const { data, isLoading, isError, error } = useQuery(todosOfGoalsOptions());
-  const goals = data?.data ?? [];
+  const { data, ...etc } = useInfiniteQuery(todosOfGoalsOptions());
+  const goals = data?.pages.flatMap((page) => page.data.content) ?? [];
 
-  return { goals, isLoading, isError, error };
+  return { goals, ...etc };
 };

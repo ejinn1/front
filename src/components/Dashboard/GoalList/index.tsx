@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+
 import { Card } from '@/components/common/Card';
 import { DashboardItemContainer } from '@/components/Dashboard/DashboardItemContainer';
 import { GoalItem } from '@/components/Dashboard/GoalList/GoalItem';
@@ -7,7 +9,32 @@ import { GoalItem } from '@/components/Dashboard/GoalList/GoalItem';
 import { useTodosOfGoalsQuery } from '@/hooks/apis/Dashboard/useTodosOfGoalsQuery';
 
 export const GoalList = () => {
-  const { goals } = useTodosOfGoalsQuery();
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  const { goals, fetchNextPage, isLoading } = useTodosOfGoalsQuery();
+
+  useEffect(() => {
+    if (!observerRef.current) return;
+
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      const lastEntry = entries[0];
+      if (lastEntry.isIntersecting && !isLoading) {
+        fetchNextPage();
+      }
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold: 1.0,
+    });
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    observer.observe(observerRef.current);
+
+    return () => observer.disconnect();
+  }, [fetchNextPage, isLoading]);
 
   return (
     <DashboardItemContainer title="목표 별 할 일">
@@ -23,6 +50,7 @@ export const GoalList = () => {
               todos={goal.todos}
             />
           ))}
+          <div ref={observerRef} style={{ height: '1px' }} />
         </div>
       ) : (
         <Card>
