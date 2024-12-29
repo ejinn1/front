@@ -1,6 +1,7 @@
 'use client';
 
 import { FaBarsStaggered, FaBell } from 'react-icons/fa6';
+
 import { useSidebarStore } from '@/store/useSidebarStore';
 
 interface HeaderProps {

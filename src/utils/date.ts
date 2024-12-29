@@ -14,8 +14,8 @@ export const formatDateToRelativeTime = (dateString: string): string => {
   if (!dateString) return '';
 
   const date = new Date(dateString);
-  const now = Date.now();
-  const timeDifference = date.getTime() - now;
+  const now = new Date();
+  const timeDifference = date.getTime() - now.getTime();
   const rtf = new Intl.RelativeTimeFormat('ko', { numeric: 'auto' });
 
   const seconds = Math.floor(timeDifference / 1000);
@@ -45,4 +45,13 @@ export const formatDateToRelativeTime = (dateString: string): string => {
 
   const years = Math.floor(months / 12);
   return rtf.format(years, 'year');
+};
+
+export const isDatePast = (dateString: string): boolean => {
+  if (!dateString) return false;
+
+  const today = new Date().setHours(0, 0, 0, 0);
+  const thisDay = new Date(dateString).setHours(0, 0, 0, 0);
+
+  return today > thisDay;
 };
