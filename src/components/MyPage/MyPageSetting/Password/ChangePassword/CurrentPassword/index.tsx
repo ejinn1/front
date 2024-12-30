@@ -13,7 +13,6 @@ export const CurrentPassword = ({ register, error }: ChangePasswordProps) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <span className="text-sm-normal">현재 비밀번호</span>
       <div className="flex w-full items-center justify-between gap-10 rounded-12 bg-white pr-24">
         <Input
           type={isVisible ? 'text' : 'password'}
@@ -24,7 +23,6 @@ export const CurrentPassword = ({ register, error }: ChangePasswordProps) => {
         />
         <VisibilityIcon isVisible={isVisible} onClick={handleClickIcon} />
       </div>
-
       <span className="text-xs-normal text-error">{error?.message}</span>
     </div>
   );
