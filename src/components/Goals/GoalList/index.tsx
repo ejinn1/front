@@ -5,10 +5,12 @@ import { TodoList } from '@/components/Dashboard/GoalList/GoalItem/TodoList';
 
 import { useGoalsDetailQuery } from '@/hooks/apis/Goals/useGoalsDetailQuery';
 
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 import { GoalHeader } from './GoalHeader';
 
 export const GoalList = () => {
-  const { goals } = useGoalsDetailQuery();
+  const { goals, fetchNextPage, isLoading } = useGoalsDetailQuery();
+  const { observerRef } = useInfiniteScroll({ fetchNextPage, isLoading });
 
   return (
     <div className="flex flex-col gap-16">
@@ -28,6 +30,7 @@ export const GoalList = () => {
           ))}
         </div>
       ))}
+      <div ref={observerRef} style={{ height: '1px' }} />
     </div>
   );
 };
