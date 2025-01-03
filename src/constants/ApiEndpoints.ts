@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
     PASSWORD: '/api/v1/auths/password',
     FOLLOW_COUNT: '/api/v1/auths/mypage',
     WITHDRAWAL: '/api/v1/auths/withdrawl',
+    USER_PROFILE: (userId: number) => `/api/v1/auths/profile/${userId}`,
   },
 
   GOAL: {
@@ -35,6 +36,8 @@ export const API_ENDPOINTS = {
   FOLLOW: {
     CREATE: (followerId: number) => `api/v1/follows/${followerId}`,
     DELETE: (followerId: number) => `api/v1/follows/${followerId}`,
+    ASSIGN_FOLLOW: (followId: number) => `/api/v1/follows/${followId}`,
+    DELETE_FOLLOW: (followId: number) => `/api/v1/follows/${followId}`,
     GET: `/api/v1/follows`,
   },
 
