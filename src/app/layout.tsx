@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 import { Metadata } from 'next';
 import localFont from 'next/font/local';
 
@@ -23,14 +25,16 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="ko">
       <body className={`${pretendard.variable} font-pretendard`}>
         <QueryProvider>
-          <div className="h-dvh w-screen overflow-y-auto overflow-x-hidden">
-            {children}
+          <div className="flex-center h-dvh w-screen overflow-y-auto bg-custom-white-300">
+            <main className="w-full min-w-330 max-w-780 bg-custom-white-100">
+              {children}
+            </main>
           </div>
         </QueryProvider>
       </body>

@@ -11,6 +11,7 @@ import {
 
 import { useRouter } from 'next/navigation';
 
+import Link from 'next/link';
 import LogoIcon from '@/assets/svg/svg-logo-icon.svg';
 import LogoSide from '@/assets/svg/svg-logo-side.svg';
 import { GoalList } from '@/components/Sidebar/GoalList';
@@ -38,18 +39,13 @@ export const Sidebar = () => {
 
   const sidebarClass = cn(
     'fixed md:sticky top-0 left-0 z-20 flex flex-col items-center h-screen py-16 transition-all duration-200 ease-in-out bg-white border-r border-custom-white-200',
-    isOpen ? 'md:w-280 w-screen' : 'w-0 md:min-w-60 overflow-hidden',
+    isOpen ? 'md:max-w-280 w-screen' : 'w-0 md:min-w-60 overflow-hidden',
   );
 
   const iconContainerClass = cn(
     isOpen
       ? 'flex w-full items-center justify-between px-16'
       : 'flex flex-col gap-16',
-  );
-
-  const backGroundClass = cn(
-    'fixed left-280 top-0 hidden h-screen w-full bg-black transition-opacity duration-200 ease-in-out md:block lg:hidden',
-    isOpen ? 'opacity-50' : 'opacity-0',
   );
 
   const recentGoals = goals
@@ -62,7 +58,7 @@ export const Sidebar = () => {
   return (
     <div className={sidebarClass}>
       <div className={iconContainerClass}>
-        {isOpen ? <LogoSide /> : <LogoIcon />}
+        <Link href="/dashboard">{isOpen ? <LogoSide /> : <LogoIcon />}</Link>
         {isOpen ? (
           <FaAnglesLeft
             className="size-28 cursor-pointer p-4 text-slate-400"
@@ -79,7 +75,7 @@ export const Sidebar = () => {
         <div className="flex w-full flex-col items-center">
           <Profile />
           <MenuItem
-            icon={<FaChartSimple className="size-28 cursor-pointer p-4" />}
+            icon={<FaChartSimple className="size-28 p-4" />}
             label="홈"
             onClick={() => {
               router.push('/dashboard');
@@ -101,7 +97,7 @@ export const Sidebar = () => {
           />
           <GoalList goals={recentGoals} />
           <MenuItem
-            icon={<FaListUl className="size-28 cursor-pointer p-4" />}
+            icon={<FaListUl className="size-28 p-4" />}
             label="내 할일"
             addButton={
               <SidebarButton
@@ -121,7 +117,7 @@ export const Sidebar = () => {
             }}
           />
           <MenuItem
-            icon={<FaFire className="size-28 cursor-pointer p-4" />}
+            icon={<FaFire className="size-28 p-4" />}
             label="팔로워"
             onClick={() => {
               router.push('/follows');
@@ -130,7 +126,6 @@ export const Sidebar = () => {
           />
         </div>
       )}
-      <div className={backGroundClass} onClick={close} />
     </div>
   );
 };
