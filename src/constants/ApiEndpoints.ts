@@ -11,6 +11,8 @@ export const API_ENDPOINTS = {
     GET_TODAY_TODOS: '/api/v1/todos/today',
     PUT_CERTIFIED_TODO: (completeId: number) =>
       `/api/v1/completes/${completeId}`,
+    GET_CERTIFIED_TODO: (completeId: number) =>
+      `/api/v1/completes/${completeId}`,
     GET_DETAIL: (todoId: number) => `/api/v1/todos/${todoId}`,
   },
 
@@ -44,5 +46,11 @@ export const API_ENDPOINTS = {
   LIKE: {
     CREATE: (completeId: number) => `api/v1/completes/${completeId}/likes`,
     DELETE: (completeId: number) => `api/v1/completes/${completeId}/likes`,
+  },
+
+  COMMENT: {
+    PUT: (commentId: number) => `api/v1/comments/${commentId}`,
+    DELETE: (commentId: number) => `api/v1/comments/${commentId}`,
+    CREATE: `api/v1/comments`,
   },
 };

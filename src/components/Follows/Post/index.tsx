@@ -14,9 +14,14 @@ export function Post(props: PostProps) {
 
   return (
     <div className="w-screen flex-col gap-16 pb-24">
-      <PostProfile createdAt={post.createdAt} userName="홍길동" />
+      <PostProfile
+        createdAt={post.createdAt}
+        username={post.username}
+        profilePic={post.profilePic}
+        userId={post.userId}
+      />
 
-      <PostImage completePic={post.completePic} />
+      <PostImage completePic={post.completePic} completeId={post.completeId} />
 
       <div className="my-12 flex gap-16">
         <PostLike
@@ -27,7 +32,11 @@ export function Post(props: PostProps) {
         <PostComments commentCount={post.commentCount} />
       </div>
 
-      <PostContent text="이 글의 본문 내용입니다. (추후 데이터 연동 예정)" />
+      <PostContent
+        text={post.completeContent}
+        completeId={post.completeId}
+        push
+      />
     </div>
   );
 }
