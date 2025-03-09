@@ -6,13 +6,12 @@ import { API_ENDPOINTS } from '@/constants/ApiEndpoints';
 import { QUERY_KEYS } from '@/constants/QueryKeys';
 import { TodayProgressResponse } from '@/types/Dashboard';
 
-export const todayProgressOptions = (): UseQueryOptions<
-  TodayProgressResponse,
-  AxiosError
-> => ({
+export const todayProgressOptions = (
+  token?: string,
+): UseQueryOptions<TodayProgressResponse, AxiosError> => ({
   queryKey: [QUERY_KEYS.TODAY_PROGRESS],
   queryFn: () =>
-    GET<TodayProgressResponse>(API_ENDPOINTS.TODOS.GET_TODAY_PROGRESS),
+    GET<TodayProgressResponse>(API_ENDPOINTS.TODOS.GET_TODAY_PROGRESS, token),
 });
 
 export const useTodayProgressQuery = () => {
