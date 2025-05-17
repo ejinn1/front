@@ -1,30 +1,45 @@
-'use client';
+"use client";
 
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { FaAngleLeft } from 'react-icons/fa6';
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { FaAngleLeft } from "react-icons/fa6";
 
-import Link from 'next/link';
+import Link from "next/link";
 
-import { AuthFooter } from '@/components/AuthPage/AuthFooter';
-import { EmailInput } from '@/components/AuthPage/EmailInput';
-import { MetaData } from '@/components/AuthPage/MetaData';
-import { NameInput } from '@/components/AuthPage/NameInput';
-import { PasswordChkInput } from '@/components/AuthPage/PasswordChkInput';
-import { PasswordInput } from '@/components/AuthPage/PasswordInput';
-import { Button } from '@/components/common/Button/Button';
-import { AUTH_FOOTER_MESSAGES } from '@/constants/AuthFooterMessages';
-import { useSignup } from '@/hooks/apis/Auth/useSignup';
-import { AuthDataRequest } from '@/types/Auth/AuthDataRequest';
+import { AuthFooter } from "@/components/AuthPage/AuthFooter";
+import { MetaData } from "@/components/AuthPage/MetaData";
+import { VisibilityIcon } from "@/components/AuthPage/VisibilityIcon";
+import { Button } from "@/components/common/Button/Button";
+import { InputField } from "@/components/common/InputField/InputField";
+import { AUTH_FOOTER_MESSAGES } from "@/constants/AuthFooterMessages";
+import { PLACEHOLDERS } from "@/constants/Placeholders";
+import { useSignupMutation } from "@/hooks/apis/Auth/useSignupMutation";
+import { AuthDataRequest } from "@/types/Auth/AuthDataRequest";
+import {
+  emailValidation,
+  nameValidation,
+  passwordChkValidation,
+  passwordValidation,
+} from "@/utils/authValidation";
+import { useState } from "react";
 
 export default function Signup() {
-  const {
-    getValues,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AuthDataRequest>({ mode: 'onBlur' });
+  const { getValues, control, handleSubmit } = useForm<AuthDataRequest>({
+    mode: "onChange",
+  });
 
-  const { mutate, isPending } = useSignup();
+  const { mutate, isPending } = useSignupMutation();
+
+  const [visibility, setVisibility] = useState({
+    password: false,
+    passwordCheck: false,
+  });
+
+  const toggleVisibility = (key: keyof typeof visibility) => {
+    setVisibility((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
 
   const handleClick: SubmitHandler<AuthDataRequest> = (data) => {
     mutate(data);
@@ -45,13 +60,79 @@ export default function Signup() {
         </div>
         <div className="flex w-full flex-col items-start gap-48">
           <div className="flex w-full flex-col items-start gap-16">
-            <NameInput register={register} error={errors.name} />
-            <EmailInput register={register} error={errors.email} />
-            <PasswordInput register={register} error={errors.password} />
-            <PasswordChkInput
-              register={register}
-              error={errors.passwordCheck}
-              getValues={getValues}
+            <Controller
+              name="name"
+              control={control}
+              defaultValue=""
+              rules={nameValidation}
+              render={({ field, fieldState }) => (
+                <InputField
+                  label="이름"
+                  placeholder={PLACEHOLDERS.NAME}
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={fieldState.error?.message}
+                />
+              )}
+            />
+            <Controller
+              name="email"
+              control={control}
+              defaultValue=""
+              rules={emailValidation}
+              render={({ field, fieldState }) => (
+                <InputField
+                  label="이메일"
+                  placeholder={PLACEHOLDERS.EMAIL}
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={fieldState.error?.message}
+                />
+              )}
+            />
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              rules={passwordValidation}
+              render={({ field, fieldState }) => (
+                <InputField
+                  label="비밀번호"
+                  type={visibility.password ? "text" : "password"}
+                  placeholder={PLACEHOLDERS.PASSWORD}
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={fieldState.error?.message}
+                  icon={
+                    <VisibilityIcon
+                      isVisible={visibility.password}
+                      onClick={() => toggleVisibility("password")}
+                    />
+                  }
+                />
+              )}
+            />
+            <Controller
+              name="passwordCheck"
+              control={control}
+              defaultValue=""
+              rules={passwordChkValidation({ getValues })}
+              render={({ field, fieldState }) => (
+                <InputField
+                  label="비밀번호 확인"
+                  type={visibility.passwordCheck ? "text" : "password"}
+                  placeholder={PLACEHOLDERS.PASSWORD_CHECK}
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={fieldState.error?.message}
+                  icon={
+                    <VisibilityIcon
+                      isVisible={visibility.passwordCheck}
+                      onClick={() => toggleVisibility("passwordCheck")}
+                    />
+                  }
+                />
+              )}
             />
           </div>
           <div className="flex w-full flex-col items-center gap-40">
