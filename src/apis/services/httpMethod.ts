@@ -1,8 +1,8 @@
-import { AxiosError } from 'axios';
+import { AxiosError } from "axios";
 
-import axiosInstance, { setAuthToken } from '@/lib/axiosInstance';
+import axiosInstance, { setAuthToken } from "@/lib/axiosInstance";
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
 interface RequestOptionsProps {
   method: HttpMethod;
@@ -31,21 +31,18 @@ async function request<T>({
     return response.data;
   } catch (error) {
     if (!(error instanceof AxiosError)) {
-      throw new Error('오류가 발생했습니다.');
+      throw new Error("오류가 발생했습니다.");
     }
 
-    const status = error.response?.status;
-    const message = error.response?.data.message || error.message;
-
-    throw new Error(JSON.stringify({ status, message }));
+    throw error;
   }
 }
 
 export const API = {
   get: <T>(url: string, token?: string) =>
-    request<T>({ method: 'GET', url, token }),
+    request<T>({ method: "GET", url, token }),
   post: <T, U>(url: string, data?: U) =>
-    request<T>({ method: 'POST', url, data }),
-  put: <T, U>(url: string, data: U) => request<T>({ method: 'PUT', url, data }),
-  delete: <T>(url: string) => request<T>({ method: 'DELETE', url }),
+    request<T>({ method: "POST", url, data }),
+  put: <T, U>(url: string, data: U) => request<T>({ method: "PUT", url, data }),
+  delete: <T>(url: string) => request<T>({ method: "DELETE", url }),
 };
