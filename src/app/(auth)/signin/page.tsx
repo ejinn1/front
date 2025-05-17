@@ -1,25 +1,34 @@
-'use client';
+"use client";
 
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from "react-hook-form";
 
-import { AuthFooter } from '@/components/AuthPage/AuthFooter';
-import { EmailInput } from '@/components/AuthPage/EmailInput';
-import { Logo } from '@/components/AuthPage/Logo';
-import { MetaData } from '@/components/AuthPage/MetaData';
-import { PasswordInput } from '@/components/AuthPage/PasswordInput';
-import { Button } from '@/components/common/Button/Button';
-import { AUTH_FOOTER_MESSAGES } from '@/constants/AuthFooterMessages';
-import { useSignin } from '@/hooks/apis/Auth/useSignin';
-import { AuthDataRequest } from '@/types/Auth/AuthDataRequest';
+import { AuthFooter } from "@/components/AuthPage/AuthFooter";
+import { Logo } from "@/components/AuthPage/Logo";
+import { MetaData } from "@/components/AuthPage/MetaData";
+import { VisibilityIcon } from "@/components/AuthPage/VisibilityIcon";
+import { Button } from "@/components/common/Button/Button";
+import { InputField } from "@/components/common/InputField/InputField";
+import { AUTH_FOOTER_MESSAGES } from "@/constants/AuthFooterMessages";
+import { PLACEHOLDERS } from "@/constants/Placeholders";
+import { useSigninMutation } from "@/hooks/apis/Auth/useSigninMutation";
+import { AuthDataRequest } from "@/types/Auth/AuthDataRequest";
+import { emailValidation, passwordValidation } from "@/utils/authValidation";
+import { useState } from "react";
 
 export default function Signin() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AuthDataRequest>({ mode: 'onBlur' });
+  } = useForm<AuthDataRequest>({ mode: "onBlur" });
 
-  const { mutate, isPending } = useSignin();
+  const { mutate, isPending } = useSigninMutation();
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleClickIcon = () => {
+    setIsVisible(!isVisible);
+  };
 
   const handleClick: SubmitHandler<AuthDataRequest> = (data) => {
     mutate({ email: data.email, password: data.password });
@@ -35,8 +44,25 @@ export default function Signin() {
         <Logo />
         <div className="flex w-full flex-col items-start gap-48">
           <div className="flex w-full flex-col items-start gap-16">
-            <EmailInput register={register} error={errors.email} />
-            <PasswordInput register={register} error={errors.password} />
+            <InputField
+              label="아이디"
+              {...register("email", emailValidation)}
+              error={errors.email?.message}
+              placeholder={PLACEHOLDERS.EMAIL}
+            />
+            <InputField
+              label="비밀번호"
+              type={isVisible ? "text" : "password"}
+              {...register("password", passwordValidation)}
+              error={errors.password?.message}
+              placeholder={PLACEHOLDERS.PASSWORD}
+              icon={
+                <VisibilityIcon
+                  isVisible={isVisible}
+                  onClick={handleClickIcon}
+                />
+              }
+            />
           </div>
           <div className="flex w-full flex-col items-center gap-40">
             <Button type="submit" size="large" pending={isPending}>
