@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico|mockServiceWorker.js).*)',
+  ],
 };
 
 const AUTH_PAGES = ['/signup', '/signin'];
