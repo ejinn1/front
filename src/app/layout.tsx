@@ -5,6 +5,7 @@ import localFont from 'next/font/local';
 
 import QueryProvider from '@/provider/QueryProvider';
 
+import InitMSW from '@/mocks/InitMSW/InitMSW';
 import '@/styles/globals.css';
 
 const pretendard = localFont({
@@ -41,6 +42,7 @@ export default function RootLayout({
         <QueryProvider>
           <div className="flex-center h-dvh w-screen overflow-y-auto bg-custom-white-300">
             <main className="w-full min-w-330 max-w-780 bg-custom-white-100">
+              <InitMSW />
               {children}
             </main>
           </div>
