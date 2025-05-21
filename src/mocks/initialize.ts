@@ -1,9 +1,11 @@
-export async function enableMocking() {
-  if (typeof window === 'undefined') return;
-
-  if (process.env.NEXT_PUBLIC_API_MOCKING !== 'enabled') return;
-
-  const { worker } = await import('./browser');
-
-  await worker.start();
+async function initMSW() {
+  if (typeof window === 'undefined') {
+    const { server } = await import('./server');
+    return server.listen();
+  } else {
+    const { worker } = await import('./browser');
+    return worker.start();
+  }
 }
+
+export { initMSW };
