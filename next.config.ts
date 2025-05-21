@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'zzikzzik-bucket.s3.ap-northeast-2.amazonaws.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos'
+      }
     ],
     formats: ['image/avif', 'image/webp'],
   },
