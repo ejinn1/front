@@ -5,7 +5,5 @@ export async function enableMocking() {
 
   const { worker } = await import('./browser');
 
-  await worker.start({
-    onUnhandledRequest: 'bypass', // 미정의된 요청은 네트워크로 pass
-  });
+  await worker.start();
 }
