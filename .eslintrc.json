@@ -22,7 +22,8 @@
     "plugin:tailwindcss/recommended", // Tailwind CSS 권장 규칙
     "next/core-web-vitals", // Next.js Core Web Vitals 규칙
     "plugin:prettier/recommended", // Prettier와 ESLint 통합
-    "prettier"
+    "prettier",
+    "import"
   ],
   "plugins": [
     "@typescript-eslint", // TypeScript 지원
