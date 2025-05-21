@@ -1,26 +1,27 @@
-"use client";
+'use client';
 
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from 'react';
 
-import { AuthFooter } from "@/components/AuthPage/AuthFooter";
-import { Logo } from "@/components/AuthPage/Logo";
-import { MetaData } from "@/components/AuthPage/MetaData";
-import { VisibilityIcon } from "@/components/AuthPage/VisibilityIcon";
-import { Button } from "@/components/common/Button/Button";
-import { InputField } from "@/components/common/InputField/InputField";
-import { AUTH_FOOTER_MESSAGES } from "@/constants/AuthFooterMessages";
-import { PLACEHOLDERS } from "@/constants/Placeholders";
-import { useSigninMutation } from "@/hooks/apis/Auth/useSigninMutation";
-import { AuthDataRequest } from "@/types/Auth/AuthDataRequest";
-import { emailValidation, passwordValidation } from "@/utils/authValidation";
-import { useState } from "react";
+import { SubmitHandler, useForm } from 'react-hook-form';
+
+import { AuthFooter } from '@/components/AuthPage/AuthFooter';
+import { Logo } from '@/components/AuthPage/Logo';
+import { MetaData } from '@/components/AuthPage/MetaData';
+import { VisibilityIcon } from '@/components/AuthPage/VisibilityIcon';
+import { Button } from '@/components/common/Button/Button';
+import { InputField } from '@/components/common/InputField/InputField';
+import { AUTH_FOOTER_MESSAGES } from '@/constants/AuthFooterMessages';
+import { PLACEHOLDERS } from '@/constants/Placeholders';
+import { useSigninMutation } from '@/hooks/apis/Auth/useSigninMutation';
+import { AuthDataRequest } from '@/types/Auth/AuthDataRequest';
+import { emailValidation, passwordValidation } from '@/utils/authValidation';
 
 export default function Signin() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AuthDataRequest>({ mode: "onBlur" });
+  } = useForm<AuthDataRequest>({ mode: 'onBlur' });
 
   const { mutate, isPending } = useSigninMutation();
 
@@ -46,14 +47,14 @@ export default function Signin() {
           <div className="flex w-full flex-col items-start gap-16">
             <InputField
               label="아이디"
-              {...register("email", emailValidation)}
+              {...register('email', emailValidation)}
               error={errors.email?.message}
               placeholder={PLACEHOLDERS.EMAIL}
             />
             <InputField
               label="비밀번호"
-              type={isVisible ? "text" : "password"}
-              {...register("password", passwordValidation)}
+              type={isVisible ? 'text' : 'password'}
+              {...register('password', passwordValidation)}
               error={errors.password?.message}
               placeholder={PLACEHOLDERS.PASSWORD}
               icon={

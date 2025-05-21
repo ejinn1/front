@@ -1,30 +1,30 @@
-"use client";
+'use client';
 
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { FaAngleLeft } from "react-icons/fa6";
+import { useState } from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { FaAngleLeft } from 'react-icons/fa6';
 
-import Link from "next/link";
+import Link from 'next/link';
 
-import { AuthFooter } from "@/components/AuthPage/AuthFooter";
-import { MetaData } from "@/components/AuthPage/MetaData";
-import { VisibilityIcon } from "@/components/AuthPage/VisibilityIcon";
-import { Button } from "@/components/common/Button/Button";
-import { InputField } from "@/components/common/InputField/InputField";
-import { AUTH_FOOTER_MESSAGES } from "@/constants/AuthFooterMessages";
-import { PLACEHOLDERS } from "@/constants/Placeholders";
-import { useSignupMutation } from "@/hooks/apis/Auth/useSignupMutation";
-import { AuthDataRequest } from "@/types/Auth/AuthDataRequest";
+import { AuthFooter } from '@/components/AuthPage/AuthFooter';
+import { MetaData } from '@/components/AuthPage/MetaData';
+import { VisibilityIcon } from '@/components/AuthPage/VisibilityIcon';
+import { Button } from '@/components/common/Button/Button';
+import { InputField } from '@/components/common/InputField/InputField';
+import { AUTH_FOOTER_MESSAGES } from '@/constants/AuthFooterMessages';
+import { PLACEHOLDERS } from '@/constants/Placeholders';
+import { useSignupMutation } from '@/hooks/apis/Auth/useSignupMutation';
+import { AuthDataRequest } from '@/types/Auth/AuthDataRequest';
 import {
   emailValidation,
   nameValidation,
   passwordChkValidation,
   passwordValidation,
-} from "@/utils/authValidation";
-import { useState } from "react";
+} from '@/utils/authValidation';
 
 export default function Signup() {
   const { getValues, control, handleSubmit } = useForm<AuthDataRequest>({
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const { mutate, isPending } = useSignupMutation();
@@ -98,7 +98,7 @@ export default function Signup() {
               render={({ field, fieldState }) => (
                 <InputField
                   label="비밀번호"
-                  type={visibility.password ? "text" : "password"}
+                  type={visibility.password ? 'text' : 'password'}
                   placeholder={PLACEHOLDERS.PASSWORD}
                   value={field.value}
                   onChange={field.onChange}
@@ -106,7 +106,7 @@ export default function Signup() {
                   icon={
                     <VisibilityIcon
                       isVisible={visibility.password}
-                      onClick={() => toggleVisibility("password")}
+                      onClick={() => toggleVisibility('password')}
                     />
                   }
                 />
@@ -120,7 +120,7 @@ export default function Signup() {
               render={({ field, fieldState }) => (
                 <InputField
                   label="비밀번호 확인"
-                  type={visibility.passwordCheck ? "text" : "password"}
+                  type={visibility.passwordCheck ? 'text' : 'password'}
                   placeholder={PLACEHOLDERS.PASSWORD_CHECK}
                   value={field.value}
                   onChange={field.onChange}
@@ -128,7 +128,7 @@ export default function Signup() {
                   icon={
                     <VisibilityIcon
                       isVisible={visibility.passwordCheck}
-                      onClick={() => toggleVisibility("passwordCheck")}
+                      onClick={() => toggleVisibility('passwordCheck')}
                     />
                   }
                 />

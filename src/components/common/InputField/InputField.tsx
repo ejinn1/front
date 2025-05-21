@@ -1,6 +1,8 @@
-import { cn } from "@/utils/className";
-import { forwardRef } from "react";
-import { Input, InputProps } from "../Input";
+import { forwardRef } from 'react';
+
+import { cn } from '@/utils/className';
+
+import { Input, InputProps } from '../Input';
 
 interface InputFieldProps extends InputProps {
   label?: string;
@@ -12,7 +14,7 @@ interface InputFieldProps extends InputProps {
 export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   ({ label, error, required, className, icon, ...props }, ref) => {
     return (
-      <div className="flex flex-col gap-5 w-full">
+      <div className="flex w-full flex-col gap-5">
         {label && (
           <label
             htmlFor={props.id || props.name}
@@ -26,12 +28,12 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           <Input
             ref={ref}
             required={required}
-            className={cn(error && "border-error", className)}
+            className={cn(error && 'border-error', className)}
             aria-invalid={!!error}
             {...props}
           />
           {icon && (
-            <div className="absolute top-1/2 -translate-y-1/2 right-24">
+            <div className="absolute right-24 top-1/2 -translate-y-1/2">
               {icon}
             </div>
           )}
@@ -41,7 +43,7 @@ export const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
         </span>
       </div>
     );
-  }
+  },
 );
 
-InputField.displayName = "InputField";
+InputField.displayName = 'InputField';
