@@ -4,7 +4,7 @@ export const generateMockFollowPosts = (
   cursor: number,
   size: number,
 ): GetFollowsResponse => {
-  const totalItems = 30; // 전체 mock 아이템 개수
+  const totalItems = 30;
   const startId = cursor || 0;
   const endId = Math.min(startId + size, totalItems);
 
