@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 import { Header } from '@/components/common/Header';
 import { PageContainer } from '@/components/common/PageContainer';
 import { Follower } from '@/components/Dashboard/Follower';
+import { GoalList } from '@/components/Dashboard/GoalList';
+import { MyProgress } from '@/components/Dashboard/MyProgress';
 
 export default async function DashBoardPage() {
   const cookieStore = await cookies();
@@ -17,9 +19,9 @@ export default async function DashBoardPage() {
           <ServerFetchBoundary fetchOptions={recentTodosOptions(token)}>
             <RecentTodos />
           </ServerFetchBoundary>
-        </Suspense>
+        </Suspense> */}
         <MyProgress />
-        <GoalList /> */}
+        <GoalList />
       </PageContainer>
     </>
   );

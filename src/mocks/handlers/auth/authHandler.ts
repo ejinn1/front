@@ -65,4 +65,16 @@ export const authHandlers = [
       { status: 201 },
     );
   }),
+
+  http.get(`${BASE_API}${API_ENDPOINTS.AUTH.USER}`, () => {
+    return HttpResponse.json({
+      statusCode: 200,
+      timestamp: new Date().toISOString(),
+      data: {
+        email: 'mockuser@example.com',
+        name: '모킹 유저',
+        profilePic: 'https://i.pravatar.cc/150?img=12',
+      },
+    });
+  }),
 ];

@@ -1,5 +1,8 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
+import { Spinner } from '@/components/common/Spinner';
+import { goalsOptions } from '@/hooks/apis/useGoalsQuery';
+import { ServerFetchBoundary } from '@/lib/query/ServerFetchBoundary';
 import dynamic from 'next/dynamic';
 import { cookies } from 'next/headers';
 
@@ -15,11 +18,11 @@ export default async function RootLayout({
 
   return (
     <div className="flex">
-      {/* <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<Spinner />}>
         <ServerFetchBoundary fetchOptions={goalsOptions(token)}>
           <Sidebar />
         </ServerFetchBoundary>
-      </Suspense> */}
+      </Suspense>
       {children}
     </div>
   );

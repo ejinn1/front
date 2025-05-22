@@ -18,9 +18,7 @@ import { GoalList } from '@/components/Sidebar/GoalList';
 import { MenuItem } from '@/components/Sidebar/MenuItem';
 import { Profile } from '@/components/Sidebar/Profle';
 import { SidebarButton } from '@/components/Sidebar/SidebarButton';
-
 import { useGoalsQuery } from '@/hooks/apis/useGoalsQuery';
-
 import { useNewGoalsStore } from '@/store/useNewGoalStore';
 import { useSidebarStore } from '@/store/useSidebarStore';
 import { useTodoModalStore } from '@/store/useTodoModalStore';
