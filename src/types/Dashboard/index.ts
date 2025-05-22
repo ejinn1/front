@@ -3,7 +3,7 @@ import { BasePageableTypes } from '../pageable';
 import { BaseResponse } from '../response';
 
 export interface RecentTodosResponse extends BaseResponse {
-  data: BasePageableTypes<TodoTypes[]>;
+  data: TodoTypes[];
 }
 
 export interface TodayProgressResponse extends BaseResponse {
