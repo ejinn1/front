@@ -4,8 +4,7 @@ import {
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-import { API } from '@/apis/services/httpMethod';
-import { API_ENDPOINTS } from '@/constants/ApiEndpoints';
+import { API_ROUTES } from '@/constants/ApiRoutes';
 import { QUERY_KEYS } from '@/constants/QueryKeys';
 import { GoalsResponse } from '@/types/Goals';
 
@@ -13,7 +12,11 @@ export const goalsOptions = (
   token?: string,
 ): UseSuspenseQueryOptions<GoalsResponse, AxiosError> => ({
   queryKey: [QUERY_KEYS.GOALS],
-  queryFn: () => API.get<GoalsResponse>(API_ENDPOINTS.GOAL.GOALS, token),
+  // queryFn: () => API.get<GoalsResponse>(API_ENDPOINTS.GOAL.GOALS, token),
+  queryFn: () =>
+    fetch(`http://localhost:3000${API_ROUTES.GOAL.GOALS}`).then((res) =>
+      res.json(),
+    ),
 });
 
 export const useGoalsQuery = () => {

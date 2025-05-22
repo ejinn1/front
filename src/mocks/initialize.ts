@@ -1,10 +1,14 @@
 async function initMSW() {
   if (typeof window === 'undefined') {
     const { server } = await import('./server');
-    return server.listen();
+    return server.listen({
+      onUnhandledRequest: 'bypass',
+    });
   } else {
     const { worker } = await import('./browser');
-    return worker.start();
+    return worker.start({
+      onUnhandledRequest: 'bypass',
+    });
   }
 }
 

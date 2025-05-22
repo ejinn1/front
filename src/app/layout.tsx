@@ -1,12 +1,9 @@
-import { ReactNode } from 'react';
-
+import MswProvider from '@/mocks/mswProvider/mswProvider';
+import QueryProvider from '@/provider/QueryProvider';
+import '@/styles/globals.css';
 import { Metadata } from 'next';
 import localFont from 'next/font/local';
-
-import QueryProvider from '@/provider/QueryProvider';
-
-import MswProvider from '@/mocks/mswProvider/mswProvider';
-import '@/styles/globals.css';
+import { ReactNode } from 'react';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
