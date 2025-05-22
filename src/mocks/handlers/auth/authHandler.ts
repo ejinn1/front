@@ -5,7 +5,6 @@ import { BASE_API, TEST_TOKEN } from '@/mocks/const/const';
 
 export const authHandlers = [
   http.post(`${BASE_API}${API_ENDPOINTS.AUTH.SIGN_IN}`, async ({ request }) => {
-    console.log('[MSW] 로그인 요청');
     const { email } = (await request.json()) as {
       email: string;
       password: string;
