@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 
 import { API_ROUTES } from '@/constants/ApiRoutes';
 import { QUERY_KEYS } from '@/constants/QueryKeys';
+import { getBaseUrl } from '@/lib/getBaseUrl';
 import { RecentTodosResponse } from '@/types/Dashboard';
 
 export const recentTodosOptions = (
@@ -18,9 +19,7 @@ export const recentTodosOptions = (
   //     token,
   //   ),
   queryFn: () =>
-    fetch(`http://localhost:3000${API_ROUTES.TODO.TODOS}`).then((res) =>
-      res.json(),
-    ),
+    fetch(`${getBaseUrl()}${API_ROUTES.TODO.TODOS}`).then((res) => res.json()),
 });
 
 export const useRecentTodosQuery = () => {

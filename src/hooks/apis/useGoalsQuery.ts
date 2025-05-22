@@ -6,6 +6,7 @@ import { AxiosError } from 'axios';
 
 import { API_ROUTES } from '@/constants/ApiRoutes';
 import { QUERY_KEYS } from '@/constants/QueryKeys';
+import { getBaseUrl } from '@/lib/getBaseUrl';
 import { GoalsResponse } from '@/types/Goals';
 
 export const goalsOptions = (
@@ -14,9 +15,7 @@ export const goalsOptions = (
   queryKey: [QUERY_KEYS.GOALS],
   // queryFn: () => API.get<GoalsResponse>(API_ENDPOINTS.GOAL.GOALS, token),
   queryFn: () =>
-    fetch(`http://localhost:3000${API_ROUTES.GOAL.GOALS}`).then((res) =>
-      res.json(),
-    ),
+    fetch(`${getBaseUrl()}${API_ROUTES.GOAL.GOALS}`).then((res) => res.json()),
 });
 
 export const useGoalsQuery = () => {
